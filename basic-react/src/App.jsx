@@ -4,28 +4,37 @@ import viteLogo from '/vite.svg'
 import Transection from './components/Transection'
 import FormComponent from './components/FormComponent';
 import './App.css'
+import DataContext from './data/DataContext';
+import ReportComponent from './components/Reportcomponent';
 
 function App() {
-  
-  const Ttile =()=><h1>โปรแกรมรายรับรายจ่าย</h1>
-  const Description =()=><p>บันทึกข้อมูล</p>
   const design = {color:'red',textAlign:'center',fontSize:'1.5rem'};
   const initdata = [
-    {id:1, title: 'Valid', amount: 100 },  
-    {id:2, title: "123" ,amount: 500 },                         // ❌ title wrong type, missing amount
-    {id:3, title: 'Text', amount: 700},            
-  ];  
+    {id:1, title: 'Valid', amount: 100 },
+    {id:2, title: "123" ,amount: 500 },
+    {id:3, title: 'Text', amount: 700},     
+  ];
+  const [items,setItems] = useState([])
   const onAddNewItem = (newItem)=>{
+    setItems((prevItem) =>{
+      return [newItem,...prevItem]
+    })
     console.log('new item formcom.',newItem)
   }
   return (
-      <div className='container'>
+      <DataContext.Provider value={
+        {
+          income : 50000,
+          expense: -8000
+        }
+      }>
+        <div className='container'>
             <h1 style={design}>แอพบัญชี</h1>
+            <ReportComponent/>
             <FormComponent onAddItem={onAddNewItem}/>
-            <Ttile/>
-            <Description/>
-            <Transection items = {initdata} />
-      </div>
+            <Transection items = {items}/>
+        </div>
+      </DataContext.Provider>
     );
 }
 
